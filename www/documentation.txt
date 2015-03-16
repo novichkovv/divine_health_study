@@ -1,0 +1,348 @@
+Documentation
+
+1.Creating a new page.
+
+To create a page we must create a new controller in /controllers/ folder.
+Its name must consists of url part (for example 'clients' if the url is 'http://example.com/clients/'), and '_controller :
+'clients_controller'.
+It must extend from abstract class 'controller' and must implement abstract public index() method :
+
+class clients_controller extends controller
+{
+    public function index()
+    {
+
+    }
+}
+
+actions are controllers public methods that are called by the 2nd part of the url:
+'list' method of 'clients_controller' will be called if the url is 'http://example.com/clients/list'
+
+If users is not logged in 'list_na' will be called.
+
+If it is an ajax request made by ajax(params) function, 'list_ajax' or 'list_na_ajax' method will be called depending on
+user is logged in or not. (I will write about ajax(params) method earlier.)
+
+CONTROLLER METHODS:
+
+render((string) $key, (string) $value) - sets variables, that are available in template.
+view((string) $template_name) - calls the template from /templates/ folder. Don't need to write .php extension at at the name.
+For example if we need to load template '/templates/clients/list.php' we shall call in controller $this->view('clients/list');
+
+class clients_controller extends controller
+{
+    public function index()
+    {
+        $this->render('some_var', 'some_value');
+        $this->view('clients' . DS . 'list');
+    }
+}
+
+
+
+These templates are only the part of the page that is in <div class="page-content"> tags.
+If you need to change documents header or footer or sidebar just for one page, you can create a template and
+assign its full path to one of the next controller public properties:
+'system_header' - block beginning from <!doctype> ending with </head> tag
+'header' - navbar, and opening of '<div class="page-container">
+                                       <div class="page-content-wrapper">
+                                            <div class="page-content">'
+'footer' - closes previous tags
+'system_footer' - end of the document
+E.G.:
+
+class clients_controller extends controller
+{
+    public function index()
+    {
+        $this->header = ROOT_DIR . 'templates/clients/header'; //includes the templates/clients/header.php file
+
+        $this->system_header = false; //doesn't include system_header at all
+
+        $this->render('some_var', 'some_value');
+        $this->view('clients' . DS . 'list');
+    }
+}
+
+public  model((string) $model) method includes model class or if there is no class with such name it makes a default model
+object and sets its default table from the value of $model argument:
+
+class clients_controller extends controller
+{
+    public function index()
+    {
+        $clients_model = $this->model('clients'); //creates an instance of 'clients_model' class or if it doesn't
+                                                 //exist a default model with 'clients' table
+
+        $this->render('some_var', 'some_value');
+        $this->view('clients' . DS . 'list');
+    }
+}
+
+2. MODEL
+
+Models are in /models/ folder.
+It must extend 'model' class and its name must consist of any prefix and '_model', for ex. 'clients_model'
+or 'clients_properties_model'.
+
+class clients_model extends model
+{
+
+}
+
+The first call of any model makes connection with the Database automatically, which is used by all other models of the script.
+
+MODEL BUILT-IN METHODS:
+
+protected get_all(pdo $query [,(array) $data]);
+returns a two-dimensional associative massive from the result of the PDO prepared query:
+
+class clients_model extends model
+{
+    public function getClients()
+    {
+        $query = $this->pdo->prepare('SELECT id, name FROM clients WHERE status = :stat');
+        return $this->get_all($query, array('stat' => '1'));
+    }
+}
+
+//returns:
+array( [0] => array(
+                'id' => '1',
+                'name' => 'Claude'),
+       [1] => array)
+                'id' => '2',
+                'name' => 'Jean'));
+
+This method is protected and can be used only in models.
+
+protected get_row(pdo $query [, (array) $data] );
+
+returns one row in an associative massive from the result of the PDO prepared query:
+
+class clients_model extends model
+{
+    public function getClients()
+    {
+        $query = $this->pdo->prepare('SELECT id, name FROM clients WHERE id = :id');
+        return $this->get_row($query, array('id' => '1'));
+    }
+}
+
+//returns array(
+              'id' => '1',
+              'name' => 'Claude');
+
+This method is protected and can be used only in models.
+
+Public model methods:
+
+public getAll( [(string) $order [, (string) $limit]] )
+
+returns the whole table:
+
+class clients_controller extends controller
+{
+    public function index()
+    {
+        $clients = $this->model('clients')->getAll();
+
+        //returns
+        array( [0] => array(
+                        'id_client' => '1',
+                        'name' => 'Claude'),
+               [1] => array)
+                        'id' => '2',
+                        'name' => 'Jean'));
+
+        $limited_clients = $this->model('clients')->getAll('id DESC', '1'); //ORDER BY id DESC LIMIT 1
+
+         //returns
+                array( [1] => array)
+                                'id_client' => '2',
+                                'name' => 'Jean'));
+    }
+}
+
+public getRow()
+
+returns first one row of the table
+
+public getById((int) $id [, (string) $id_field_name] )
+gets a row by id if id `field_name` is 'tablename_id', if not 2nd argument is necessary.
+
+class clients_controller extends controller
+{
+    public function index()
+    {
+        $clients = $this->model('clients')->getById(1);
+
+        //returns
+        array(
+            'id_client' => '1',
+            'name' => 'Claude'),
+
+        $users = $this->model('users')->getById(1, 'id');
+
+        //returns
+                array(
+                    'id' => '1',
+                    'name' => 'Username'),
+    }
+}
+
+public getByField((string) $field_name, (string) $field_value [,(bool) $all_rows [,(string) $order [,(string) $order ]]] );
+
+Gets a row or all rows by a field:
+
+class clients_controller extends controller
+{
+    public function index()
+    {
+        $clients = $this->model('clients')->getByField('status', '1', true, 'id DESC');
+        //if the third argument is true, all rows that come to the term (WHERE status = '1'), otherwise only the first
+
+        //returns
+                array( [
+                       [0] => array(
+                               'id_client' => '2',
+                               'name' => 'Jean',
+                               'status' => '1',
+                               'country' => 'Canada'),
+                       [1] => array(
+                               'id_client' => '1',
+                               'name' => 'Claude',
+                               'status' => '1',
+                               'country' => 'Canada'));
+
+        $clients = $this->model('clients')->getByField('name', 'Jean');
+        //returns
+                    array(
+                        'id_client' => '2',
+                        'name' => 'Jean',
+                        'status' => '1',
+                        'country' => 'Canada');
+
+    }
+}
+
+public function getByFields((array $fields [,(bool) $all_rows [,(string) $order [,(string) $order ]]] );
+
+gets data by several fields:
+    public function index()
+    {
+        $data = array(
+            'status' => '1',
+            'country' => 'Canada'
+
+        $clients = $this->model('clients')->getByField($data, true, 'id DESC');
+        //if the third argument is true, all rows that come to the term (WHERE status = '1' AND country = 'Canada')
+        , otherwise only the first
+
+        //returns
+                array( [
+                       [0] => array(
+                                'id_client' => '2',
+                                'name' => 'Jean',
+                                'status' => '1',
+                                'country' => 'Canada'),
+                       [1] => array(
+                                'id_client' => '1',
+                                'name' => 'Claude',
+                                'status' => '1',
+                                'country' => 'Canada'));
+
+        $clients = $this->model('clients')->getByFields(array('name' => 'Jean', 'country' => 'Canada');
+        //returns
+                    array(
+                        'id_client' => '2',
+                        'name' => 'Jean',
+                        'status' => '1',
+                        'country' => 'Canada'));
+
+    }
+
+public insert((array) $data)
+inserts data to table
+If $data array contains 'tablename_id' field it will update the row with this id:
+
+        $data = array(
+            'client_id' => 1,
+            'name' => 'Yevgeniy');
+        $this->model('clients')->insert($data);
+        //changes `name` field to 'Yevgeniy' where `client_id` = 1
+
+        $data = array(
+            'name' => 'Yevgeniy',
+            'status' => 2,
+            'country' => 'Russia');
+        $this->model('clients')->insert($data);
+         //inserts a new row to 'clients' table
+
+Other methods:
+updateByField((array) $data [, (string) $field) - like insert() but uses not only primary key
+delete((string) $field_name, (string) $field_value) - deletes a row by field
+deleteById((int) id);
+deleteAll() - deletes all from the table
+countByField((string) $field_name, (string) $field_value) - returns number of rows fitting the tirms
+
+REGISTRY
+registry static class allows to save data in global scope. It has two methods:
+registry::set((string) $key, (mixed) $value)
+registry::get((string) $key);
+
+It contains already several meanings when controller starts executing:
+
+$user = registry::get('user'); //returns currently logged in user data
+$controller_name = registry::get('controller'); //returns current controller name
+$controller_name = registry::get('action'); //returns current action name
+
+
+AJAX
+
+ajax(params) - a JavaScripts function, that helps to send ajax queries:
+
+var params = {
+    'action': 'some_action', //to call for some case of controller (I'll explain later)
+    'values': {'data1':'val1', 'data2', 'val2'}, //any post data that comes to controller
+    'get_from_form: 'form_id', //gets all data from all elements of the form with id="form_id"
+    'url': 'http://example.com' //by default calls to current controllers 'action_ajax' method (e.g. index_ajax() or list_na_ajax())
+    'callback': function(msg) {
+        //works with query response
+    }
+}
+Example:
+if we call from clients/view_clients page:
+<script type="text/javascript">
+var params = {
+    'action': 'get_clients',
+    'values': {'client_id': 25},
+    'callback': function(msg) {
+        var client = JSON.parse(msg);
+        // do something
+    }
+}
+ajax(params)
+</script>
+
+<?php
+
+class clients_controller extends controller
+{
+    public function index() { // }
+    public function view_clients() { // }
+
+    public function view_clients_ajax()
+    {
+        switch($_REQUEST['action']) {
+            case "get_clients": //that is what we need 'action' param for
+
+                $client = $this->model('clients')->getById($_POST['client_id']);
+                echo json_encode($client);
+                exit;
+                break;
+        }
+    }
+
+}
+?>
