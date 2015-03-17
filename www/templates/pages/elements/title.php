@@ -1,2 +1,2 @@
-<h1>PAGE <?php  echo $page_number; ?>></h1>
+<h1><?php echo $page['elements']['title']; ?></h1>
 <hr>

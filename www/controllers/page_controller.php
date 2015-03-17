@@ -14,12 +14,11 @@ class page_controller extends controller
 
     public function index_na()
     {
-        switch($_GET['number']) {
-            case "1":
-                $this->view('pages' . DS . 'text_page');
-                break;
-            case "2":
-                $this->view('pages' . DS . 'video_page');
-        }
+
+        $page = $this->model('page')->getPage($_GET['number']);
+        $elements = $this->model('page')->getTypeElements($page['id_type']);
+        $this->render('elements', $elements);
+        $this->render('page', $page);
+        $this->view('pages' . DS . $page['type_name']);
     }
 }
