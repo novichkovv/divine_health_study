@@ -14,3 +14,6 @@
         </div>
     </div>
 </footer>
+<form id="logout_form" method="post" action="<?php echo SITE_DIR; ?>">
+    <input type="hidden" name="logout" value="1" />
+</form>

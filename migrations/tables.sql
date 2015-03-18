@@ -45,6 +45,16 @@ ALTER TABLE study_page_content ADD id_page INT NOT NULL after id;
 
 ALTER TABLE study_page_content ADD id_element INT NOT NULL AFTER id_page;
 
-ALTER TABLE study_pages ADD position INT NOT NULL AFTER id_type; 
+ALTER TABLE study_pages ADD position INT NOT NULL AFTER id_type;
+
+create table report_users (
+    id serial primary key,
+    login varchar(255) not null,
+    user_password varchar(255) not null,
+    user_name varchar(255) not null,
+    user_surname varchar(255) not null,
+    user_group int not null,
+    create_date datetime not null
+)  engine=MyISAM;
 
 

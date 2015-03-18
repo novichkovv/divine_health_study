@@ -52,6 +52,20 @@ abstract class controller
 
     }
 
+    protected function view_only($template)
+    {
+        $template_file = ROOT_DIR . 'templates' . DS . $template . '.php';
+        if(!file_exists($template_file)) {
+            throw new Exception('cannot find template in ' . $template_file);
+        }
+        foreach($this->vars as $k => $v) {
+            $$k = $v;
+        }
+        if($template_file !== false) {
+            require_once($template_file);
+        }
+    }
+
     abstract function index();
 
     protected function render($key, $value)
@@ -82,10 +96,22 @@ abstract class controller
     protected function checkAuth()
     {
         if($_SESSION['auth']) {
-            if($user = $this->model('user_management')->getByFields(array(
-                'user_id' => $_SESSION['user']['user_id'],
-                'user_name' => $_SESSION['user']['user_name'],
-                'user_passw' => $_SESSION['user']['user_passw']
+            if($user = $this->model('report_users')->getByFields(array(
+                'id' => $_SESSION['user']['id'],
+                'login' => $_SESSION['user']['login'],
+                'user_password' => $_SESSION['user']['password']
+            ))) {
+                registry::set('auth', true);
+                registry::set('user', $user);
+                return true;
+            } else {
+                return false;
+            }
+        } elseif($_COOKIE['user_id']) {
+            if($user = $this->model('report_users')->getByFields(array(
+                'id' => $_COOKIE['user_id'],
+                'login' => $_COOKIE['user_login'],
+                'user_password' => $_COOKIE['user_password']
             ))) {
                 registry::set('auth', true);
                 registry::set('user', $user);
@@ -107,24 +133,18 @@ abstract class controller
 
     protected function auth($user, $password, $remember = false)
     {
-        if(!$password) return false;
-        if($user = $this->model('user_management')->getByFields(array(
-            'user_name' => $user,
-            'user_passw' => $password
-        ))) {
+        if($user = $this->model('report_users')->getByFields(array(
+                'login' => $user,
+                'user_password' => $password))) {
             if(!$remember) {
-                $_SESSION['user']['user_id'] = $user['user_id'];
-                $_SESSION['user']['user_name'] = $user['user_name'];
-                $_SESSION['user']['user_passw'] = $user['user_passw'];
+                $_SESSION['user']['id'] = $user['id'];
+                $_SESSION['user']['login'] = $user['login'];
+                $_SESSION['user']['password'] = $user['user_password'];
                 $_SESSION['auth'] = 1;
-                //////////
-                $_SESSION['FI_Username'] = $user['user_name'];
-                $_SESSION['FI_UserGroup'] = $user['user_group'];
-                $_SESSION['FI_UserAvatar'] = ($user['user_avatar']!="") ? $user['user_avatar'] : "../../assets/admin/layout/img/avatar.png";
-                $_SESSION['FI_UserId'] = $user['user_id'];
-                $_SESSION['FileRun']['username'] = $user['user_name'];
-                $_SESSION['FileRun']['PASSWORD'] = $user['user_passw'];
-
+            } else {
+                @setcookie("user_id", $user['id'], time()+60*60*24*30*30, "/");
+                @setcookie("user_password", $user['user_password'], time()+60*60*24*30*30, "/");
+                @setcookie("user_login", $user['login'], time()+60*60*24*30*30, "/");
             }
             return true;
         } else {
@@ -140,11 +160,9 @@ abstract class controller
     {
         unset($_SESSION['user']);
         unset($_SESSION['auth']);
-        unset($_SESSION['FI_Username']);
-        unset($_SESSION['FI_UserGroup']);
-        unset($_SESSION['FI_UserAvatar']);
-        unset($_SESSION['FI_UserId']);
-        unset($_SESSION['FileRun']);
+        @setcookie("user_id", "", time() - 3600, "/");
+        @setcookie("user_password", "", time() - 3600, "/");
+        @setcookie("user_login", "", time() - 3600, "/");
     }
 
 

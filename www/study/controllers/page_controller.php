@@ -7,18 +7,17 @@
  */
 class page_controller extends controller
 {
-    public function index()
-    {
-
-    }
-
     public function index_na()
     {
+        $this->view_only('index_na');
+    }
 
+    public function index()
+    {
         $page = $this->model('page')->getPage($_GET['number']);
         $elements = $this->model('page')->getTypeElements($page['id_type']);
         $this->render('elements', $elements);
         $this->render('page', $page);
-        $this->view('pages' . DS . $page['type_name']);
+        $this->view('pages' . DS . 'page');
     }
 }

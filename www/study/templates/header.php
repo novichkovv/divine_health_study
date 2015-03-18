@@ -19,6 +19,7 @@
                 <li><a href="#about">About</a></li>
                 <li><a href="#service">Introduction</a></li>
                 <li><a href="#contact">Study</a></li>
+                <li><a href="#" onclick="document.getElementById('logout_form').submit();">Logout</a></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
