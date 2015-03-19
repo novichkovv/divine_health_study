@@ -14,4 +14,5 @@ define('R_SITE_DIR', SITE_DIR . 'reports/');
 
 require_once(ROOT_DIR . 'config.php');
 require_once(ROOT_DIR . 'model.php');
+require_once(ROOT_DIR . 'registry.php');
 require_once(ROOT_DIR . 'router.php');

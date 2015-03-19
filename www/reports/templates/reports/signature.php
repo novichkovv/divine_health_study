@@ -1,28 +1,50 @@
 <h1>Signature Creator</h1>
-<form method="post" action="" enctype="multipart/form-data">
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="form-group">
-                <label>Name:</label>
-                <input type="text" name="name" class="form-control" value="<?php echo stripcslashes($_POST['name']); ?>">
+<hr>
+<div class="row">
+    <div class="col-md-6">
+        <h2>Simple Signature</h2>
+        <form method="post" action="" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input type="text" name="name" class="form-control" value="<?php echo stripcslashes($_POST['name']); ?>">
+                    </div>
+                    <div class="form-group">
+                        <label>Title: </label>
+                        <input type="text" name="title" class="form-control" value="<?php echo stripcslashes($_POST['title']); ?>">
+                    </div>
+                    <div class="form-group">
+                        <label>Extension: </label>
+                        <input type="text" name="extension" class="form-control" value="<?php echo stripcslashes($_POST['extension']); ?>">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address:</label>
+                        <input type="text" name="email" class="form-control" value="<?php echo stripcslashes($_POST['email']); ?>">
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Title: </label>
-                <input type="text" name="title" class="form-control" value="<?php echo stripcslashes($_POST['title']); ?>">
-            </div>
-            <div class="form-group">
-                <label>Extension: </label>
-                <input type="text" name="extension" class="form-control" value="<?php echo stripcslashes($_POST['extension']); ?>">
-            </div>
-            <div class="form-group">
-                <label>Email Address:</label>
-                <input type="text" name="email" class="form-control" value="<?php echo stripcslashes($_POST['email']); ?>">
-            </div>
-        </div>
+            <input type="submit" class="btn btn-primary" name="submit" value="Submit" />
+        </form>
+        <br>
     </div>
-    <input type="submit" class="btn btn-primary" name="submit" value="Submit" />
-</form>
-<br>
+    <div class="col-md-6">
+        <h2>Rating Signature</h2>
+        <form method="post">
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label>Customer Email:</label>
+                        <input type="text" name="customer_email" class="form-control" value="<?php echo stripcslashes($_POST['customer_email']); ?>">
+                    </div>
+                    <input type="submit" class="btn btn-primary" name="rate_btn" value="Submit" />
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+<hr>
 <?php if ($_POST['name'] !== NULL) : ?>
     <div class="row">
         <div class="col-sm-10">
@@ -41,4 +63,38 @@
     </pre>
         </div>
     </div>
+<?php endif; ?>
+<?php if ($_POST['customer_email'] !== NULL) : ?>
+    <?php $url = 'http://shop.drcolbert.com/rate/index.php'; ?>
+    <?php echo htmlspecialchars('
+        <h2 style="color: #999">Please take a second to rate my reply..</h2>
+        <table border="0" cellpadding="2">
+            <tr>
+                <td align="center" style="padding: 15px; width: 280px;">
+                    <a href="' . $url . '/?rate=3&email=' . $_POST['customer_email'] . '"><img src="' . R_SITE_DIR . 'images/smile.png" /></a>
+                    <br>
+                    <a href="' . $url . '/?rate=3&email=' . $_POST['customer_email'] . '" style="color: #79a537; font-size: 40px;">It was great</a>
+                    <p style="color: #999; font-size: 20px;">
+                        Fast, friendly, helpful, pleasant. Great job!
+                    </p>
+                </td>
+                <td align="center" style="padding: 15px; width: 280px;">
+                    <a href="' . $url . '/?rate=2&email=' . $_POST['customer_email'] . '"><img src="' . R_SITE_DIR . 'images/flatline.png" /></a>
+                    <br>
+                    <a href="' . $url . '/?rate=2&email=' . $_POST['customer_email'] . '" style="color: #4d97d0; font-size: 40px;">It was OK</a>
+                    <p style="color: #999; font-size: 20px;">
+                        Fine, but definitely could have been better.
+                    </p>
+                </td>
+                <td align="center" style="padding: 15px; width: 280px;">
+                    <a href="' . $url . '/?rate=1&email=' . $_POST['customer_email'] . '"><img src="' . R_SITE_DIR . 'images/frown.png" /></a>
+                    <br>
+                    <a href="' . $url . '/?rate=1&email=' . $_POST['customer_email'] . '" style="color: #bf222d; font-size: 40px;">It wasn`t good</a>
+                    <p style="color: #999; font-size: 20px;">
+                        Unfortunately, I wasn’t happy with it at all.
+                    </p>
+                </td>
+            </tr>
+        </table>
+    '); ?>
 <?php endif; ?>

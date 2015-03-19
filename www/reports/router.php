@@ -27,7 +27,13 @@ if(!file_exists($filename)) {
 }
 require_once(ROOT_DIR . 'controller.php');
 require_once($filename);
+require_once(ROOT_DIR . 'controllers' . DS . 'common_controller.php');
 $class_name = $controller . '_controller';
+$common_controller = new common_controller($vars, 'common_controller', 'index');
+$common_controller->index();
 $controller = new $class_name($vars, $class_name, $action);
+if($_REQUEST['ajax']) {
+    $action .= '_ajax';
+}
 $controller->$action();
 

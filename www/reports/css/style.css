@@ -12,3 +12,7 @@
 .with-padding {
     padding: 20px;
 }
+tr.new {
+    color: #4b93ff;
+    cursor: pointer;
+}

@@ -6,10 +6,10 @@
  * Time: 21:03
  */
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
-define('DB_USER', 'shopdrco_shop');
-define('DB_PASSWORD', '18A5pq86');
+define('DB_USER', 'root');
+define('DB_PASSWORD', '');
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'shopdrco_shop');
+define('DB_NAME', 'shop');
 define('DB_CHARSET', 'utf8');
 define('DB_COLLATE', '');
 define('DB_DETOX_NAME', 'ddetox_backend');

@@ -10,7 +10,6 @@ class index_controller extends controller
 {
     function index()
     {
-        $this->render('foo', 'jon');
         $this->view('index');
     }
 }

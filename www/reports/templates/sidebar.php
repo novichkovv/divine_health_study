@@ -21,8 +21,11 @@
         <li <?php if($this->action_name == 'slider') echo 'class="active"'; ?>>
             <a href="<?php echo R_SITE_DIR; ?>tools/slider/">Slider Tools</a>
         </li>
-        <li <?php if($this->controller_name == '') echo 'class="active"'; ?>>
+        <li <?php if($this->controller_name == 'signature') echo 'class="active"'; ?>>
             <a href="<?php echo R_SITE_DIR; ?>reports/signature/">Signature Creator</a>
+        </li>
+        <li <?php if($this->controller_name == 'index') echo 'class="active"'; ?>>
+            <a href="<?php echo R_SITE_DIR; ?>reviews/index/">Reviews &nbsp;&nbsp;&nbsp; <span class="badge" id="new_reviews_badge"><?php echo registry::get('new_reviews'); ?></span></a>
         </li>
         <li>
             <a target="_blank" href="https://secure-wms.com/PresentationTier/LoginForm.aspx?3pl=%7b6064ea56-7ff3-4dbc-a382-35e9cf769d4c%7d">Planet Fulfillment Backend</a>
