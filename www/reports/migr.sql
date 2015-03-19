@@ -1,0 +1,9 @@
+CREATE TABLE low_stock_notify_emails (
+id SERIAL PRIMARY KEY,
+email VARCHAR (255) NOT NULL
+)ENGINE=MyISAM;
+
+CREATE TABLE reports_options (
+option_key VARCHAR (255) NOT NULL PRIMARY KEY,
+option_value VARCHAR (255) NOT NULL
+)ENGINE=MyISAM;

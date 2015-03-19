@@ -1,0 +1,14 @@
+#pre_loader {
+    margin: 20px;
+    text-align: center;
+}
+
+#post_loader {
+    display: none;
+}
+#customers_by_products_suggest {
+    cursor: pointer;
+}
+.with-padding {
+    padding: 20px;
+}
