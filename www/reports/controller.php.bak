@@ -21,9 +21,6 @@ abstract class controller
     {
         $this->args = $args;
         $this->controller_name = $controller;
-        if($_REQUEST['ajax']) {
-            $action .= '_ajax';
-        }
         $this->action_name = $action;
     }
 
@@ -31,7 +28,7 @@ abstract class controller
     {
         $template_file = ROOT_DIR . 'templates' . DS . $template . '.php';
         if(!file_exists($template_file)) {
-            throw new Exception('cannot find template ' . $template_file);
+            throw new Exception('cannot find template');
         }
         $vars = $this->args;
         foreach($this->vars as $k => $v) {
@@ -45,19 +42,6 @@ abstract class controller
 
     }
 
-    protected function view_only($template)
-    {
-        $template_file = ROOT_DIR . 'templates' . DS . $template . '.php';
-        if(!file_exists($template_file)) {
-            throw new Exception('cannot find template in ' . $template_file);
-        }
-        foreach($this->vars as $k => $v) {
-            $$k = $v;
-        }
-        require_once($template_file);
-    }
-
-
     abstract function index();
 
     protected function render($key, $value)
@@ -68,14 +52,12 @@ abstract class controller
     protected function model($model, $table = null, $db = null, $user = null, $password = null)
     {
         $model_file = ROOT_DIR . 'models' . DS . $model . '_model.php';
-        if(file_exists($model_file)) {
-            require_once($model_file);
-            $model_class = $model . '_model';
-            $m = new $model_class($table ? $table : $model, $db, $user, $password);
-        } else {
-            require_once(ROOT_DIR . 'models' . DS . 'default_model.php');
-            $m = new default_model($model);
+        if(!file_exists($model_file)) {
+            throw new Exception('Cannot find model');
         }
+        require_once($model_file);
+        $model_class = $model . '_model';
+        $m = new $model_class($table, $db, $user, $password);
         return $m;
     }
 }

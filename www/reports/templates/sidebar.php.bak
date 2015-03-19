@@ -34,15 +34,4 @@
             <a target="_blank" href="https://docs.google.com/spreadsheets/d/1S0h5O7bG1wVVWwwQ3TKY3U0f7SZhcRQ0gaXFMF-yh5k/edit?usp=sharing">Planet Fulfillment Customer Service Requests</a>
         </li>
     </ul>
-    <ul class="nav nav-sidebar">
-        <li <?php if($this->action_name == 'list') echo 'class="active"'; ?>>
-            <a href="<?php echo R_SITE_DIR; ?>study/">Tutor Pages</a>
-        </li>
-        <li <?php if($this->controller_name == 'add') echo 'class="active"'; ?>>
-            <a href="<?php echo R_SITE_DIR; ?>study/add/">Add Page</a>
-        </li>
-        <li <?php if($this->controller_name == 'quiz') echo 'class="active"'; ?>>
-            <a target="_blank" href="">Add Quiz</a>
-        </li>
-    </ul>
 </div>
