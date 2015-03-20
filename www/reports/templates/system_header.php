@@ -10,6 +10,7 @@
 
     <title>Dashboard</title>
     <link href="<?php echo R_SITE_DIR; ?>css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo R_SITE_DIR; ?>css/jquery-ui.min.css" rel="stylesheet">
     <link href="<?php echo R_SITE_DIR; ?>css/dashboard.css" rel="stylesheet">
     <link href="<?php echo R_SITE_DIR; ?>css/dataTables.css" rel="stylesheet">
     <link href="<?php echo R_SITE_DIR; ?>css/style.css" rel="stylesheet">
@@ -19,6 +20,7 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="<?php echo R_SITE_DIR; ?>js/jquery.js"></script>
+    <script src="<?php echo R_SITE_DIR; ?>js/jquery-ui.min.js"></script>
     <script src="<?php echo R_SITE_DIR; ?>js/bootstrap.min.js"></script>
     <script src="<?php echo R_SITE_DIR; ?>js/dataTables.js"></script>
     <script src="<?php echo R_SITE_DIR; ?>js/script.js"></script>
