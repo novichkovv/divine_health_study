@@ -21,25 +21,27 @@
                         <tr>
                             <?php foreach($tab['fields'] as $field): ?>
                                 <th>
-                                    <?php echo $field['field']['field']; ?>
+                                    <?php echo $field; ?>
                                 </th>
                             <?php endforeach; ?>
                         </tr>
                     </thead>
                     <tbody>
-                    <?php foreach($tab['fields'] as $key => $row): ?>
-                        <tr id="tr_<?php echo $i; ?>">
-                            <?php foreach($row['content'] as $field): ?>
-                                <td class="td_editable inactive" id="td_<?php echo $i; ?>_<?php echo $field; ?>">
-                                    <?php echo $field; ?>
+                    <?php if($tab['content']): ?>
+                    <?php foreach($tab['content'] as $tr => $fields): ?>
+                        <tr id="tr_<?php echo $tr; ?>">
+                            <?php foreach($fields as $id_field => $field): ?>
+                                <td class="td_editable inactive" id="td_<?php echo $tr . '_' . $id_field; ?>">
+                                    <?php echo $field['content']; ?>
                                 </td>
                             <?php endforeach; ?>
                         </tr>
                     <?php endforeach; ?>
-                    <?php for($i = 1; $i < 10; $i ++): ?>
+                    <?php endif; ?>
+                    <?php for($i = $tr + 1; $i < $tr + 10; $i ++): ?>
                         <tr id="tr_<?php echo $i; ?>">
-                            <?php foreach($tab['fields'] as $field): ?>
-                                <td class="td_editable inactive" id="td_<?php echo $i; ?>_<?php echo $field['field']['id_field']; ?>">
+                            <?php foreach($tab['fields'] as $id_field => $field): ?>
+                                <td class="td_editable inactive" id="td_<?php echo $i; ?>_<?php echo $id_field; ?>">
                                     &nbsp;
                                 </td>
                             <?php endforeach; ?>
@@ -82,7 +84,9 @@
                 var tr_id = $(tr).attr('id').substr(3);
                 $(td).removeClass('inactive');
                 if(!$(td).children('textarea').length) {
+                    var val = $(td).html();
                     $(td).html('<textarea class="textarea_editable" id="textarea_' + td_id + '" name="text[' + tr_id + '][' + td_id + ']"></textarea>');
+                    $('#textarea_' + td_id + '').val(val);
                     $('#textarea_' + td_id + '').focus();
                 }
             },100);
