@@ -34,13 +34,16 @@ class spreadsheets_model extends model
             s.name,
             s.id,
             f.id as id_field,
-            f.name as field
+            f.name as field,
+            col.color
         FROM
             reports_spreadsheets s
                 LEFT JOIN
             reports_spreadsheet_fields f ON f.id_spreadsheet = s.id
                 LEFT JOIN
             reports_spreadsheet_content c ON c.id_field = f.id
+                LEFT JOIN
+            reports_spreadsheet_colors col ON col.id_spreadsheet = s.id AND col.position = c.position
         ORDER BY c.id, f.position, s.position
         ');
         $res = $this->get_all($stm);
@@ -63,6 +66,8 @@ class spreadsheets_model extends model
                         $result[$v['id']]['content'][$v['pos']][$v['id_field']][$key] = $row;
                 } elseif(in_array($key, array('field', 'id_field')) && $v['pos']) {
                     $result[$v['id']]['content'][$v['pos']][$v['id_field']]['fields'][$key] = $row;
+                } elseif(in_array($key, array('color')) && $v['pos']) {
+                    $result[$v['id']]['content'][$v['pos']]['color'] = $row;
                 }
             }
         }
@@ -83,6 +88,8 @@ class spreadsheets_model extends model
                             $result[$v['id']]['content'][$pos][$id_field]['content'] = '';
                         }
                     }
+                    ksort($result[$v['id']]['content'][$pos]);
+
                 }
             }
         }
@@ -95,10 +102,10 @@ class spreadsheets_model extends model
                             $result[$v['id']]['content'][$i][$id_field]['fields']['name'] = $field_name;
                             $result[$v['id']]['content'][$i][$id_field]['fields']['id_field'] = $id_field;
                             $result[$v['id']]['content'][$i][$id_field]['content'] = '';
-
                         }
+                        ksort($result[$v['id']]['content'][$i]);
                     }
-                    ksort($v['content']);
+                    ksort($result[$v['id']]['content']);
                 }
             }
         }

@@ -24,27 +24,43 @@
                                     <?php echo $field; ?>
                                 </th>
                             <?php endforeach; ?>
+                            <th style="width: 170px;">Row color</th>
                         </tr>
                     </thead>
                     <tbody>
                     <?php if($tab['content']): ?>
                     <?php foreach($tab['content'] as $tr => $fields): ?>
-                        <tr id="tr_<?php echo $tr; ?>">
+                        <tr id="tr_<?php echo $tr; ?>" style="background-color: <?php echo $fields['color']; ?>">
                             <?php foreach($fields as $id_field => $field): ?>
+                                <?php if(!is_array($field)) continue; ?>
                                 <td class="td_editable inactive" id="td_<?php echo $tr . '_' . $id_field; ?>">
                                     <?php echo $field['content']; ?>
                                 </td>
                             <?php endforeach; ?>
+                            <td>
+                                <div class="color" id="color-grey" data-color="#ccc"></div>
+                                <div class="color" id="color-red" data-color="#ff4411"></div>
+                                <div class="color" id="color-yellow" data-color="#cacc48"></div>
+                                <div class="color" id="color-blue" data-color="#70a4cc"></div>
+                                <div class="color" id="color-green" data-color="#67cc7a"></div>
+                                <div class="color" id="color-white" data-color="#fff"></div>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                     <?php endif; ?>
                     <?php for($i = $tr + 1; $i < $tr + 10; $i ++): ?>
                         <tr id="tr_<?php echo $i; ?>">
                             <?php foreach($tab['fields'] as $id_field => $field): ?>
-                                <td class="td_editable inactive" id="td_<?php echo $i; ?>_<?php echo $id_field; ?>">
-                                    &nbsp;
-                                </td>
+                                <td class="td_editable inactive" id="td_<?php echo $i; ?>_<?php echo $id_field; ?>"></td>
                             <?php endforeach; ?>
+                            <td>
+                                <div class="color" id="color-grey" data-color="#ccc"></div>
+                                <div class="color" id="color-red" data-color="#ff4411"></div>
+                                <div class="color" id="color-yellow" data-color="#cacc48"></div>
+                                <div class="color" id="color-blue" data-color="#70a4cc"></div>
+                                <div class="color" id="color-green" data-color="#67cc7a"></div>
+                                <div class="color" id="color-white" data-color="#fff"></div>
+                            </td>
                         </tr>
                     <?php endfor; ?>
                     </tbody>
@@ -70,6 +86,7 @@
                     callback: function(msg){}
                 };
                 ajax(params);
+                if(val == '&nbsp;') val = '';
                 $("#td_" + td_id).html(val);
                 $("#td_" + td_id).addClass('inactive');
             }
@@ -85,15 +102,45 @@
                 $(td).removeClass('inactive');
                 if(!$(td).children('textarea').length) {
                     var val = $(td).html();
-                    $(td).html('<textarea class="textarea_editable" id="textarea_' + td_id + '" name="text[' + tr_id + '][' + td_id + ']"></textarea>');
-                    $('#textarea_' + td_id + '').val(val);
-                    $('#textarea_' + td_id + '').focus();
+                    $(td).html('<textarea class="textarea_editable" id="textarea_' + td_id + '" name="text[' + tr_id + '][' + td_id + ']">' + val + '</textarea>');
+                    //$('#textarea_' + td_id + '').val(val);
+                    setCaretPosition(document.getElementById('textarea_' + td_id), 0);
                 }
             },100);
         });
 
+        $('body').on('click', '.color', function()
+        {
+            var color = $(this).attr('data-color');
+            var position = $(this).closest('tr').attr('id').substr(3);
+            var id = $(this).closest('.tab-pane').attr('id');
+            $(this).closest('tr').css('background-color', color);
+            var params = {
+                action: 'save_color',
+                values: {id: id, color: color, 'position': position },
+                callback: function(msg){}
+            };
+            ajax(params);
+        })
+
 
     });
+    function setCaretPosition(ctrl, pos)
+    {
+
+        if(ctrl.setSelectionRange)
+        {
+            ctrl.focus();
+            ctrl.setSelectionRange(pos,pos);
+        }
+        else if (ctrl.createTextRange) {
+            var range = ctrl.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', pos);
+            range.moveStart('character', pos);
+            range.select();
+        }
+    }
 </script>
 
 

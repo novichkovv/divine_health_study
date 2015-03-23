@@ -99,6 +99,27 @@ class model
         if($show)echo $stm->queryString;
         return $result;
     }
+
+    public function getByFields(array $fields, $show_all = false, $order = "", $limit = '', $show = false)
+    {
+        $where = array();
+        foreach($fields as $k => $v) {
+            $where[] = $k . ' = :' . $k;
+        }
+        $stm = $this->pdo->prepare(
+            'SELECT * FROM
+        ' . $this->table . ' WHERE ' . implode(' AND ', $where)
+            . ( $order ? ' ORDER BY ' . $order : '')
+            . ( $limit ? ' LIMIT ' . $limit : '')
+        );
+        if($show_all)
+            $result = $this->get_all($stm, $fields);
+        else
+            $result = $this->get_row($stm, $fields);
+        if($show)echo $stm->queryString;
+        return $result;
+    }
+
     public function deleteById($id, $show = false)
     {
         if($id == '')return;

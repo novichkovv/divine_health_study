@@ -18,8 +18,8 @@ class spreadsheets_controller extends controller
         switch($_REQUEST['action']) {
             case "save_td":
                 $arr = explode('_', $_POST['td_id']);
-                $id_field = $this->model('reports_spreadsheet_fields')->getByField('position', $arr[0]);
-                $id_content = $this->model('reports_spreadsheet_content')->getByField('position', $arr[1]);
+//                $id_field = $this->model('reports_spreadsheet_fields')->getByField('position', $arr[0]);
+                $id_content = $this->model('reports_spreadsheet_content')->getByFields(array('position' => $arr[0],'id_field' => $arr[1]))['id'];
                 $row = array();
                 if($id_content) {
                     $row['id'] = $id_content;
@@ -28,7 +28,16 @@ class spreadsheets_controller extends controller
                 $row['position'] = $arr[0];
                 $row['content'] = $_POST['value'];
                 $this->model('reports_spreadsheet_content')->insert($row);
-                print_r($row);
+                exit;
+                break;
+            case "save_color":
+                $this->model('reports_spreadsheet_colors')->insert(
+                    array(
+                        'position'=> $_POST['position'],
+                        'id_spreadsheet' => $_POST['id'],
+                        'color' => $_POST['color']
+                    )
+                );
                 exit;
                 break;
         }

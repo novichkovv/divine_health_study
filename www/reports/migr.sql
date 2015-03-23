@@ -28,3 +28,11 @@ CREATE TABLE reports_spreadsheet_content (
   position INT NOT NULL,
   content TEXT NOT NULL
 )ENGINE=MyISAM;
+
+CREATE TABLE reports_spreadsheet_colors (
+  id SERIAL PRIMARY KEY,
+  id_spreadsheet INT NOT NULL,
+  position INT NOT NULL,
+  color VARCHAR (30) NOT NULL
+)ENGINE=MyISAM;
+
