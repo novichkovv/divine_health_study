@@ -88,7 +88,7 @@
                             <img src="img/icons/service-icon-2.png" alt="" />
                         </div>
                         <div class="service-desc">
-                            <h5>Medicine</h5>
+                            <h5>Nutrition</h5>
                             <p class="hoverable">Dr. Colbert is a practicing family-practice medical doctor where he combines both medicine and nutritional supplementation.</p>
                         </div>
                     </div>
@@ -98,10 +98,10 @@
                 <div class="wow fadeInUp" data-wow-delay="0.2s">
                     <div class="service-box">
                         <div class="service-icon">
-                            <img src="img/icons/service-icon-3.png" alt="" />
+                            <img src="img/icons/service-icon-5.png" alt="" />
                         </div>
                         <div class="service-desc">
-                            <h5>God</h5>
+                            <h5>Dr Colbert</h5>
                             <p class="hoverable">Since an early age, Dr. Colbert has had a passion for both medicine and God.</p>
                         </div>
                     </div>

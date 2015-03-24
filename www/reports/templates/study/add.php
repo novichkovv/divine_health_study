@@ -1,5 +1,6 @@
 <h1>Add Study Page</h1>
 <hr>
+<?php print_r($page); ?>
 <form action="" method="post" enctype="multipart/form-data">
     <div class="row">
         <div class="col-md-6">
@@ -15,32 +16,6 @@
     </div>
     <div class="row">
         <div id="form">
-
-        </div>
-<!--        <div id="type_1" class="hidden page_type">-->
-<!--            <div class="col-md-6">-->
-<!--                <div class="form-group">-->
-<!--                    <label>Title*</label>-->
-<!--                    <input type="text" value="" class="form-control" name="element[1][title]">-->
-<!--                </div>-->
-<!--                <div class="form-group">-->
-<!--                    <label>-->
-<!--                        Load Image-->
-<!--                        <input class="form-control" type="file" name="image">-->
-<!--                    </label>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-md-10">-->
-<!--                <div class="form-group">-->
-<!--                    <label>Description</label>-->
-<!--                    <textarea name="element[5][description]" class="ckeditor"></textarea>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-        <div id="type_2" class="hidden page_type">
-
-        </div>
-        <div id="type_3" class="hidden page_type">
 
         </div>
     </div>

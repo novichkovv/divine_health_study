@@ -68,6 +68,9 @@ class study_controller extends controller
                 $row['varchar_value'] = $name;
             }
         }
+        if($_GET['id']) {
+            $this->render('page', $this->model('study')->getPage($_GET['id']));
+        }
         $this->view('study' . DS . 'add');
     }
 

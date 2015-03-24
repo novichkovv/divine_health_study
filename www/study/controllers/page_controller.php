@@ -9,7 +9,7 @@ class page_controller extends controller
 {
     public function index_na()
     {
-        $this->view_only('index_na');
+        header('Location: ' . SITE_DIR);
     }
 
     public function index()
