@@ -60,6 +60,15 @@ tr.new {
 #color-white {
     background-color: #fff;
 }
+#color-grid td {
+    padding: 3px;
+}
+.input_editable {
+    border: 0;
+    width: 100%;
+    height: 100%;
+}
+
 
 
 

@@ -1,7 +1,8 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: novichkov
- * Date: 17.03.15
- * Time: 21:10
- */ 
+<div class="col-md-6">
+    <div class="form-group">
+        <label>
+            Load Image
+            <input class="form-control" type="file" name="image[]">
+        </label>
+    </div>
+</div>

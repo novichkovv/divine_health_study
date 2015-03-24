@@ -13,6 +13,7 @@ class index_controller extends controller
             $this->logOut();
             header('Location: ' . SITE_DIR);
         }
+        $this->header = 'main_header';
         $this->view('index');
     }
 

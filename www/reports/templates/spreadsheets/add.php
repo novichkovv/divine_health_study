@@ -1,6 +1,6 @@
 <script type="text/javascript" src="<?php echo R_SITE_DIR; ?>js/jquery.nestable.js">
 </script>
-<h1>Create Spreadshit</h1>
+<h1>Create Spreadsheet</h1>
 <hr>
 <div class="row">
     <div class="col-md-5">

@@ -88,10 +88,30 @@ class reports_controller extends controller
 
     public function low_stock()
     {
-        $this->model = $this->model('shop');
-        $res = $this->model->getLowStockProducts($_GET['quantity']);
+        $res = $this->model('shop')->getLowDateProducts($_GET['quantity'] ? $_GET['quantity'] : $this->model('report_options')->getOption('low_stock_notifications_quantity'));
+//        $this->model = $this->model('shop');
+//        $res = $this->model->getLowStockProducts($_GET['quantity']);
         $this->render('products', $res);
         $this->view('reports' . DS . 'low_stock');
+    }
+
+    public function manufacturing()
+    {
+        $this->render('products', $this->model('shop')->getProductManufacturingTimes());
+        $this->view('reports' . DS . 'manufacturing');
+    }
+
+    public function manufacturing_ajax()
+    {
+        switch($_REQUEST['action']) {
+            case "save_td":
+                $row = $this->model('product_manufacturing_times')->getByField('entity_id', $_POST['td_id']);
+                $row['entity_id'] = $_POST['td_id'];
+                $row['days'] = $_POST['value'];
+                $this->model('product_manufacturing_times')->insert($row, 1);
+                exit;
+                break;
+        }
     }
 
     public function signature()

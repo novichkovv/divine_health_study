@@ -4,11 +4,11 @@
     <div class="container main-content">
         <div class="row">
             <div class="col-md-10">
-                <?php foreach($elements as $element): ?>
-                    <?php if(file_exists(ROOT_DIR . 'templates' . DS . 'pages' . DS . 'elements' . DS . $element['template'] . '.php')): ?>
-                        <?php require_once('elements' . DS . $element['template'] . '.php'); ?>
+                <?php for($i = 1; $i <= count($elements); $i++): ?>
+                    <?php if(file_exists(ROOT_DIR . 'templates' . DS . 'pages' . DS . 'elements' . DS . $elements[$i]['template'] . '.php')): ?>
+                        <?php require_once('elements' . DS . $elements[$i]['template'] . '.php'); ?>
                     <?php endif; ?>
-                <?php endforeach; ?>
+                <?php endfor; ?>
             </div>
         </div>
     </div>

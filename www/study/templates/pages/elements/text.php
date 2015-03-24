@@ -1,5 +1,5 @@
 <div class="text">
-    <?php echo $page['elements']['description']; ?>
+    <?php echo $page['elements'][$i]['description']; ?>
 </div>
 
 <!--<div class="text">-->

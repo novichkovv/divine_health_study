@@ -22,14 +22,14 @@ require_once('models' . DS . 'shop_model.php');
 //////////////////////////////////////
 $model = new shop_model('shop');
 if($model->getOption('enable_low_stock_notifications')) {
-    $low_stock_products = $model->getLowStockProducts($model->getOption('low_stock_notifications_quantity'));
+    $low_stock_products = $model->getLowDateProducts($model->getOption('low_stock_notifications_quantity'));
     if($low_stock_products) {
 
         $subject = 'Low Inventory Stock Product Notification';
         $mail = '<h1>Some products are close to be out of the stock:</h1>' . "\n";
-        $mail .= '<table border="1" cellspacing="0"><tr><th>Name</th><th>Quantity</th><th>Link</th>' . "\n";
+        $mail .= '<table border="1" cellspacing="0"><tr><th>Name</th><th>Quantity</th><th>60 Days Sales</th><th>Need Days To Manufacture</th><th>Link</th>' . "\n";
         foreach($low_stock_products as $v) {
-            $mail .= '<tr><td>' . $v['name'] . '</td><td>' . $v['qty'] . '</td>' . "\n";
+            $mail .= '<tr><td>' . $v['name'] . '</td><td>' . $v['qty'] . '</td><td>' . $v['count'] . '</td><td>' . $v['days'] . '</td>' . "\n";
             $mail .= '<td><a target="_blank" class="btn btn-icon btn-default" href="' .
                 SITE_DIR . 'index.php/admin/catalog_product/edit/id/' . $v['product_id'] . '/">Edit</a></td></tr>' . "\n";
         }

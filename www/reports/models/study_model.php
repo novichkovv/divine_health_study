@@ -20,7 +20,19 @@ class study_model extends model
             id_type = :id_type
         ORDER BY stel.position
         ');
-        return $this->get_all($stm, array('id_type' => $id_type));
+        $tmp = $this->get_all($stm, array('id_type' => $id_type));
+        $res = [];
+        foreach($tmp as $v) {
+            $res[$v['pos']] = $v;
+        }
+        ksort($res);
+        return $res;
+    }
+
+    public function getLastPagePosition()
+    {
+        $stm = $this->pdo->prepare('SELECT MAX(position) max_pos FROM study_pages');
+        return $this->get_row($stm)['max_pos'];
     }
 
 }

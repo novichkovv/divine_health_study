@@ -16,6 +16,9 @@
         <li <?php if($this->action_name == 'low_stock') echo 'class="active"'; ?>>
             <a href="<?php echo R_SITE_DIR; ?>reports/low_stock/">Low Inventory Products</a>
         </li>
+        <li <?php if($this->action_name == 'manufacturing') echo 'class="active"'; ?>>
+            <a href="<?php echo R_SITE_DIR; ?>reports/manufacturing/">Product Manufacturing Times</a>
+        </li>
     </ul>
     <ul class="nav nav-sidebar">
         <li <?php if($this->action_name == 'slider') echo 'class="active"'; ?>>

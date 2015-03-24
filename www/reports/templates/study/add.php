@@ -51,7 +51,7 @@
     </div>
 </form>
 
-
+<script type="text/javascript" src="../../js/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
     //CKEDITOR.replace( 'ckeditor' );
     $ = jQuery.noConflict();

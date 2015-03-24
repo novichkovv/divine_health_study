@@ -27,6 +27,18 @@ class shop_model extends model
         return $this->get_all($stm, array('product_id' => $product_id));
     }
 
+    public function getLastSixtyDaysSalesByProduct()
+    {
+        $stm = $this->pdo->prepare('
+        SELECT
+            count(product_id)
+        FROM
+            sales_flat_order_item
+        GROUP BY product_id;
+        ');
+        return $this->get_all($stm);
+    }
+
     public function productNameSuggest($string)
     {
         $stm = $this->pdo->prepare('
@@ -47,7 +59,7 @@ class shop_model extends model
     {
         $stm = $this->pdo->prepare('
        SELECT
-            product_id, p.value name, qty
+            product_id, p.value name, qty, t.days
         FROM
             cataloginventory_stock_item csi
                 JOIN
@@ -55,10 +67,55 @@ class shop_model extends model
                 AND p.attribute_id = 71
                 JOIN
             catalog_product_entity cpe ON cpe.entity_id = p.entity_id
+            LEFT JOIN
+            product_manufacturing_times t ON t.entity_id = p.entity_id
         WHERE
             qty < :quantity
         ');
         return $this->get_all($stm, array('quantity' => $quantity ? $quantity : 3));
+    }
+
+    public function getProductManufacturingTimes()
+    {
+        $stm = $this->pdo->prepare('
+        SELECT
+            p.entity_id id, value name, days
+        FROM
+            catalog_product_entity_varchar p
+                LEFT JOIN
+            product_manufacturing_times t ON t.entity_id = p.entity_id
+        WHERE p.attribute_id = 71
+        ');
+        return $this->get_all($stm);
+    }
+
+    public function getLowDateProducts($min = 5)
+    {
+        $stm = $this->pdo->prepare('
+        SELECT
+            count(s.product_id) count, s.product_id, t.days, count(s.product_id)/60*days m, qty, p.value name
+        FROM
+            sales_flat_order_item s
+        LEFT JOIN
+            product_manufacturing_times t ON t.entity_id = s.product_id
+        JOIN
+            cataloginventory_stock_item q ON q.product_id = t.entity_id
+        JOIN
+        catalog_product_entity_varchar p ON s.product_id = p.entity_id
+            AND p.attribute_id = 71
+        WHERE s.created_at > NOW() - INTERVAL 60 DAY
+        AND t.days > 0
+        GROUP BY product_id
+        ');
+        $stm->execute();
+        $stm->setFetchMode(PDO::FETCH_ASSOC);
+        $res = array();
+        while($row = $stm->fetch()) {
+            if($row['m'] >= $row['qty'] - $min) {
+                $res[] = $row;
+            }
+        }
+        return $res;
     }
 
 }

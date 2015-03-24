@@ -1,6 +1,43 @@
 <h1>Spreadsheets</h1>
 <hr>
 <div class="row">
+    <div class="col-md-4 col-md-offset-8">
+        <table border="0" id="color-grid">
+            <tr>
+                <td>
+                    <div class="color" id="color-grey"></div>
+                </td>
+                <td> Split Order</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="color" id="color-red"></div>
+                </td>
+                <td> Cancel Order</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="color" id="color-yellow"></div>
+                </td>
+                <td> Customer Gives Compliment</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="color" id="color-blue"></div>
+                </td>
+                <td> Product Estimated Time to Arrive</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="color" id="color-green"></div>
+                </td>
+                <td> Suggestion Box</td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+<div class="row">
     <div class="col-md-12">
         <ul class="nav nav-tabs">
             <?php $i = true; ?>

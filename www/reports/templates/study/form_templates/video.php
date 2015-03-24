@@ -1,7 +1,8 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: novichkov
- * Date: 17.03.15
- * Time: 21:10
- */ 
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>Video Url</label>
+            <input type="text" class="form-control" name="element[4][url]" value="">
+        </div>
+    </div>
+</div>

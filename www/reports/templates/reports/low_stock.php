@@ -34,7 +34,9 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
+                            <th>Manufacturing Time</th>
                             <th>Quantity</th>
+                            <th>60 days Sales</th>
                             <th>Edit</th>
                         </tr>
                         </thead>
@@ -43,7 +45,9 @@
                             <tr>
                                 <th><?php echo $v['product_id']; ?></th>
                                 <th><?php echo $v['name']; ?></th>
+                                <th><?php echo $v['days']; ?></th>
                                 <th><?php echo $v['qty'];?></th>
+                                <th><?php echo $v['count']; ?></th>
                                 <th>
                                     <a target="_blank" class="btn btn-icon btn-default" href="<?php echo SITE_DIR . 'index.php/admin/catalog_product/edit/id/' . $v['product_id']; ?>/">
                                         <span class="glyphicon glyphicon-edit"></span>

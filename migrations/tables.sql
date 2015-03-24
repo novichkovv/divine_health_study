@@ -57,4 +57,10 @@ create table report_users (
     create_date datetime not null
 )  engine=MyISAM;
 
+CREATE TABLE product_manufacturing_times (
+  id SERIAL PRIMARY KEY ,
+  entity_id BIGINT NOT NULL,
+  days INT NOT NULL
+)ENGINE=MyISAM;
+
 
