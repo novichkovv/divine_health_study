@@ -83,4 +83,23 @@ class spreadsheets_controller extends controller
         $this->view('spreadsheets' . DS . 'add');
 
     }
+
+    public function manage()
+    {
+        if(isset($_POST['save_changes_btn'])) {
+            foreach($_POST['old'] as $id => $row) {
+                $row['id'] = $id;
+                $this->model('reports_spreadsheets')->insert($row);
+            }
+            header('Location: ?');
+            exit;
+        }
+        if(isset($_POST['delete_btn'])) {
+            $this->model('reports_spreadsheets')->deleteById($_POST['delete_id']);
+            header('Location: ?');
+            exit;
+        }
+        $this->render('spreadsheets', $this->model('reports_spreadsheets')->getAll('position'));
+        $this->view('spreadsheets' . DS . 'manage');
+    }
 }

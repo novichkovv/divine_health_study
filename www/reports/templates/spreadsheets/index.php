@@ -50,17 +50,20 @@
         <!-- Tab panes -->
         <div class="tab-content">
             <?php $i = true; ?>
+            <?php if(is_array($tabs)): ?>
             <?php foreach($tabs as $k => $tab): ?>
             <div class="tab-pane <?php if($i) echo 'active'; ?>" id="<?php echo $tab['id']; ?>">
                 <br />
                 <table class="table table-bordered">
                     <thead>
                         <tr>
+                            <?php if(is_array($tab['fields'])): ?>
                             <?php foreach($tab['fields'] as $field): ?>
                                 <th>
                                     <?php echo $field; ?>
                                 </th>
                             <?php endforeach; ?>
+                            <?php endif; ?>
                             <th style="width: 170px;">Row color</th>
                         </tr>
                     </thead>
@@ -87,9 +90,11 @@
                     <?php endif; ?>
                     <?php for($i = $tr + 1; $i < $tr + 10; $i ++): ?>
                         <tr id="tr_<?php echo $i; ?>">
+                            <?php if(is_array($tab['fields'])): ?>
                             <?php foreach($tab['fields'] as $id_field => $field): ?>
                                 <td class="td_editable inactive" id="td_<?php echo $i; ?>_<?php echo $id_field; ?>"></td>
                             <?php endforeach; ?>
+                            <?php endif; ?>
                             <td>
                                 <div class="color" id="color-grey" data-color="#ccc"></div>
                                 <div class="color" id="color-red" data-color="#ff4411"></div>
@@ -105,6 +110,7 @@
             </div>
             <?php $i = null; ?>
             <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </div>
 </div>

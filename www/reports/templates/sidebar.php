@@ -55,5 +55,8 @@
         <li <?php if($this->controller_name == 'spreadsheets' && $this->action_name == 'add') echo 'class="active"'; ?>>
             <a href="<?php echo R_SITE_DIR; ?>spreadsheets/add/">Add Spreadsheet</a>
         </li>
+        <li <?php if($this->controller_name == 'spreadsheets' && $this->action_name == 'manage') echo 'class="active"'; ?>>
+            <a href="<?php echo R_SITE_DIR; ?>spreadsheets/manage/">Manage Spreadsheet</a>
+        </li>
     </ul>
 </div>
