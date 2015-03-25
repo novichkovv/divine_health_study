@@ -4,8 +4,6 @@
 <hr>
 <div class="row">
     <div class="col-md-6">
-
-
         <form method="post" action="">
             <div class="row">
                 <div class="form-group">

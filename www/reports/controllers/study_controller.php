@@ -68,6 +68,7 @@ class study_controller extends controller
                 $row['varchar_value'] = $name;
             }
         }
+        $this->render('types', $this->model('study_page_types')->getAll());
         if($_GET['id']) {
             $this->render('page', $this->model('study')->getPage($_GET['id']));
         }
@@ -78,12 +79,49 @@ class study_controller extends controller
     {
         switch($_REQUEST['action']) {
             case "get_form":
-                $elements = $this->model('study')->getTypeElements($_POST['type']);
-                $this->render('elements', $elements);
+                $type = $this->model('study')->getTypeElements($_POST['type']);
+                $this->render('type', $type);
                 $this->view_only('study' . DS . 'ajax' . DS . 'get_form');
                 exit;
                 break;
         }
+    }
 
+    public function types()
+    {
+        $this->render('types', $this->model('study_page_types')->getAll());
+        $this->view('study' . DS . 'types');
+    }
+
+    public function add_type()
+    {
+        if(isset($_POST['save_changes_btn'])) {
+            $row = [];
+            if($_GET['id']) {
+                $row['id'] = $_GET['id'];
+            }
+            $row['type_name'] = $_POST['type_name'];
+            $row['description'] = $_POST['description'];
+            $id_type = $this->model('study_page_types')->insert($row);
+            $this->model('study_type_element_link')->delete('id_type', $id_type);
+            if($_POST['position'])
+            foreach($_POST['position'] as $id_element => $position) {
+                foreach($position as $pos) {
+                    $row = array();
+                    $row['id_element'] = $id_element;
+                    $row['position'] = $pos;
+                    $row['id_type'] = $id_type;
+                    $this->model('study_type_element_link')->insert($row);
+                }
+
+            }
+            header('Location: ' . R_SITE_DIR . 'study/add_type/?id=' . $id_type);
+            exit;
+        }
+        $this->render('elements', $this->model('study_page_elements')->getAll());
+        if($_GET['id']) {
+            $this->render('type', $this->model('study')->getTypeElements($_GET['id']));
+        }
+        $this->view('study' . DS . 'add_types');
     }
 }

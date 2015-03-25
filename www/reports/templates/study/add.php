@@ -1,6 +1,5 @@
 <h1>Add Study Page</h1>
 <hr>
-<?php print_r($page); ?>
 <form action="" method="post" enctype="multipart/form-data">
     <div class="row">
         <div class="col-md-6">
@@ -8,20 +7,29 @@
                 <label>Page Type</label>
                 <select name="type" class="form-control">
                     <option value="">Choose Type</option>
-                    <option value="1">Text Page</option>
-                    <option value="2">Video Page</option>
+                    <?php if($types): ?>
+                        <?php foreach($types as $type): ?>
+                            <option value="<?php echo $type['id']; ?>" <?php if($type['id'] == 1) echo 'selected'; ?>><?php echo $type['type_name']; ?></option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </select>
             </div>
         </div>
     </div>
     <div class="row">
         <div id="form">
-
+            <?php if($_GET['id']): ?>
+                <?php foreach($page['elements'] as $element): ?>
+                    <?php if(file_exists(ROOT_DIR . 'templates' . DS . 'study' . DS . 'form_templates' . DS . $element['form_template'] . '.php')): ?>
+                        <?php require_once(ROOT_DIR . 'templates' . DS . 'study' . DS . 'form_templates' . DS . $element['form_template'] . '.php'); ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
-            <button class="btn btn-info" name="add_page_btn">Add page</button>
+            <button class="btn btn-info" name="add_page_btn"><?php echo ($_GET['id'] ?  'Save Page' : 'Add page'); ?></button>
         </div>
     </div>
 </form>

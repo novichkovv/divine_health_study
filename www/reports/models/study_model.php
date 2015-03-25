@@ -11,11 +11,20 @@ class study_model extends model
     {
         $stm = $this->pdo->prepare('
         SELECT
-            *
+            t.id,
+            t.type_name,
+            t.description,
+            spe.id id_element,
+            spe.name,
+            spe.template,
+            spe.form_template,
+            stel.position pos
         FROM
             study_type_element_link stel
                 JOIN
             study_page_elements spe ON stel.id_element = spe.id
+                JOIN
+            study_page_types t ON t.id = stel.id_type
         WHERE
             id_type = :id_type
         ORDER BY stel.position
@@ -23,9 +32,18 @@ class study_model extends model
         $tmp = $this->get_all($stm, array('id_type' => $id_type));
         $res = [];
         foreach($tmp as $v) {
-            $res[$v['pos']] = $v;
+            foreach($v as $key => $val) {
+                if(in_array($key, array('id', 'type_name', 'description'))) {
+                    $res[$key] = $val;
+                } else {
+                    $res['elements'][$v['id_element']][$v['pos']][$key] = $val;
+                }
+            }
+            if($res['elements'][$v['id_element']][$v['pos']])
+                ksort($res['elements'][$v['id_element']][$v['pos']]);
         }
-        ksort($res);
+        if($res['elements'])
+            ksort($res['elements']);
         return $res;
     }
 
