@@ -31,6 +31,7 @@ if(!file_exists(ROOT_DIR . 'controllers' . DS . $class_name . '.php')) {
 }
 registry::set('controller', $class_name);
 $controller = new $class_name($class_name, $action);
+
 if(!$controller->check_auth) {
     $action .= '_na';
 }

@@ -24,8 +24,17 @@ abstract class controller
         if($_REQUEST['ajax']) {
             $action .= '_ajax';
         }
-        $this->action_name = $action;
+        $this->check_auth = $this->checkAuth();
+        if($this->check_auth) {
+            $this->sidebar();
+        }
+        $this->action_name = $action . ($this->check_auth ? '_na' : '');
     }
+
+    /**
+     * @param string $template
+     * @throws Exception
+     */
 
     protected function view($template)
     {
@@ -45,6 +54,11 @@ abstract class controller
 
     }
 
+    /**
+     * @param string $template
+     * @throws Exception
+     */
+
     protected function view_only($template)
     {
         $template_file = ROOT_DIR . 'templates' . DS . $template . '.php';
@@ -60,10 +74,24 @@ abstract class controller
 
     abstract function index();
 
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
+
     protected function render($key, $value)
     {
         $this->vars[$key] = $value;
     }
+
+    /**
+     * @param $model
+     * @param string $table
+     * @param string $db
+     * @param string $user
+     * @param string $password
+     * @return model
+     */
 
     protected function model($model, $table = null, $db = null, $user = null, $password = null)
     {
@@ -78,4 +106,98 @@ abstract class controller
         }
         return $m;
     }
+
+    /**
+     * @return bool
+     */
+    protected function checkAuth()
+    {
+        if($_SESSION['auth']) {
+            if($user = $this->model('report_users')->getByFields(array(
+                'id' => $_SESSION['user']['id'],
+                'login' => $_SESSION['user']['login'],
+                'user_password' => $_SESSION['user']['password']
+            ))) {
+                registry::set('auth', true);
+                registry::set('user', $user);
+                return true;
+            } else {
+                return false;
+            }
+        } elseif($_COOKIE['user_id']) {
+            if($user = $this->model('report_users')->getByFields(array(
+                'id' => $_COOKIE['user_id'],
+                'login' => $_COOKIE['user_login'],
+                'user_password' => $_COOKIE['user_password']
+            ))) {
+                registry::set('auth', true);
+                registry::set('user', $user);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param string $user
+     * @param string $password
+     * @param bool $remember
+     * @return bool
+     */
+
+    protected function auth($user, $password, $remember = false)
+    {
+        if($user = $this->model('report_users')->getByFields(array(
+            'login' => $user,
+            'user_password' => $password))) {
+            if(!$remember) {
+                $_SESSION['user']['id'] = $user['id'];
+                $_SESSION['user']['login'] = $user['login'];
+                $_SESSION['user']['password'] = $user['user_password'];
+                $_SESSION['auth'] = 1;
+            } else {
+                @setcookie("user_id", $user['id'], time()+60*60*24*30*30, "/");
+                @setcookie("user_password", $user['user_password'], time()+60*60*24*30*30, "/");
+                @setcookie("user_login", $user['login'], time()+60*60*24*30*30, "/");
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @return void
+     */
+
+    protected function logOut()
+    {
+        unset($_SESSION['user']);
+        unset($_SESSION['auth']);
+        @setcookie("user_id", "", time() - 3600, "/");
+        @setcookie("user_password", "", time() - 3600, "/");
+        @setcookie("user_login", "", time() - 3600, "/");
+    }
+
+    private function sidebar()
+    {
+        $tmp = $this->model('report_routes')->getAll('position');
+        $sidebar = [];
+        foreach($tmp as $v) {
+            if(!$v['parent']) {
+                foreach($v as $key => $val) {
+                    $sidebar[$v['id']][$key] = $val;
+                }
+            } else {
+                foreach($v as $key => $val) {
+                    $sidebar[$v['parent']]['children'][$v['id']][$key] = $val;
+                }
+            }
+        }
+        $this->render('sidebar', $sidebar);
+    }
+
 }

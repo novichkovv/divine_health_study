@@ -63,4 +63,21 @@ CREATE TABLE product_manufacturing_times (
   days INT NOT NULL
 )ENGINE=MyISAM;
 
+CREATE TABLE report_user_groups (
+  id SERIAL PRIMARY KEY,
+  group_name VARCHAR (255) NOT NULL
+);
 
+CREATE TABLE report_routes (
+  id SERIAL PRIMARY KEY,
+  route VARCHAR (255) NOT NULL,
+  route_name VARCHAR (255) NOT NULL,
+  external TINYINT NOT NULL,
+  position INT NOT NULL,
+  parent BIGINT UNSIGNED NOT NULL
+);
+
+CREATE TABLE report_group_routes (
+  id_route BIGINT UNSIGNED NOT NULL,
+  id_group BIGINT UNSIGNED NOT NULL
+);

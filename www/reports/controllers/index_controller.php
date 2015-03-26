@@ -12,4 +12,16 @@ class index_controller extends controller
     {
         $this->view('index');
     }
+
+    public function index_na()
+    {
+        if(isset($_POST['login_btn'])) {
+            if($this->auth($_POST['login'], md5($_POST['password']), $_POST['remember'])) {
+                header('Location: ' . R_SITE_DIR);
+            } else {
+                $this->render('error', true);
+            }
+        }
+        $this->view_only('index_na');
+    }
 }

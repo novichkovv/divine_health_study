@@ -32,6 +32,10 @@ $class_name = $controller . '_controller';
 $common_controller = new common_controller($vars, 'common_controller', 'index');
 $common_controller->index();
 $controller = new $class_name($vars, $class_name, $action);
+
+if(!$controller->check_auth) {
+    $action .= '_na';
+}
 if($_REQUEST['ajax']) {
     $action .= '_ajax';
 }
