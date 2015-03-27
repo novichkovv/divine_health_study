@@ -95,19 +95,20 @@ class reports_controller extends controller
         $this->view('reports' . DS . 'low_stock');
     }
 
-    public function manufacturing()
+    public function product_info()
     {
-        $this->render('products', $this->model('shop')->getProductManufacturingTimes());
-        $this->view('reports' . DS . 'manufacturing');
+        $this->render('products', $this->model('shop')->getProductInfo());
+        $this->view('reports' . DS . 'product_info');
     }
 
-    public function manufacturing_ajax()
+    public function product_info_ajax()
     {
         switch($_REQUEST['action']) {
             case "save_td":
-                $row = $this->model('product_manufacturing_times')->getByField('entity_id', $_POST['td_id']);
-                $row['entity_id'] = $_POST['td_id'];
-                $row['days'] = $_POST['value'];
+                $row = $this->model('product_manufacturing_times')->getByField('entity_id', $_POST['id_product']);
+                $row['entity_id'] = $_POST['id_product'];
+                $row[$_POST['field']] = $_POST['value'];
+                print_r($row);
                 $this->model('product_manufacturing_times')->insert($row, 1);
                 exit;
                 break;

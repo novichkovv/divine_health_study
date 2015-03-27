@@ -22,7 +22,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
         <div class="panel panel-info">
             <div class="panel-heading">
                 <h3 class="panel-title">Low Inventory Stock Products List</h3>
@@ -33,10 +33,16 @@
                         <thead>
                         <tr>
                             <th>ID</th>
+                            <th>SKU</th>
                             <th>Name</th>
                             <th>Manufacturing Time</th>
                             <th>Quantity</th>
                             <th>60 days Sales</th>
+                            <th>Manufacturer</th>
+                            <th>Contact Name</th>
+                            <th>Contact #</th>
+                            <th>Contact Email</th>
+                            <th>Cost</th>
                             <th>Edit</th>
                         </tr>
                         </thead>
@@ -44,10 +50,16 @@
                             <?php foreach($products as $v): ?>
                             <tr>
                                 <th><?php echo $v['product_id']; ?></th>
+                                <th><?php echo $v['sku']; ?></th>
                                 <th><?php echo $v['name']; ?></th>
                                 <th><?php echo $v['days']; ?></th>
                                 <th><?php echo $v['qty'];?></th>
                                 <th><?php echo $v['count']; ?></th>
+                                <th><?php echo $v['manufacturer']; ?></th>
+                                <th><?php echo $v['contact_name']; ?></th>
+                                <th><?php echo $v['contact_phone']; ?></th>
+                                <th><?php echo $v['contact_email']; ?></th>
+                                <th><?php echo $v['cost']; ?></th>
                                 <th>
                                     <a target="_blank" class="btn btn-icon btn-default" href="<?php echo SITE_DIR . 'index.php/admin/catalog_product/edit/id/' . $v['product_id']; ?>/">
                                         <span class="glyphicon glyphicon-edit"></span>

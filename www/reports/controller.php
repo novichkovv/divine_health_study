@@ -184,18 +184,37 @@ abstract class controller
 
     private function sidebar()
     {
-        $tmp = $this->model('report_routes')->getAll('position');
-        $sidebar = [];
+        $tmp = $this->model('report_group_routes')->getByField('id_group', registry::get('user')['user_group'], true);
+        $permissions = [];
         foreach($tmp as $v) {
+            $permissions[] = $v['id_route'];
+        }
+        $sidebar = [];
+        $tmp = $this->model('report_routes')->getAll('position');
+        $permit_page = false;
+        foreach($tmp as $v) {
+            if(!in_array($v['id'], $permissions)) {
+                continue;
+            }
             if(!$v['parent']) {
                 foreach($v as $key => $val) {
                     $sidebar[$v['id']][$key] = $val;
+                    if($v['route'] == $_REQUEST['route']) {
+                        $permit_page = true;
+                    }
                 }
             } else {
                 foreach($v as $key => $val) {
                     $sidebar[$v['parent']]['children'][$v['id']][$key] = $val;
+                    if($v['route'] == $_REQUEST['route']) {
+                        $permit_page = true;
+                    }
                 }
             }
+        }
+        if(!$permit_page) {
+            echo 'ACCESS DENIED';
+            exit;
         }
         $this->render('sidebar', $sidebar);
     }

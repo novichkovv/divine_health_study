@@ -75,11 +75,11 @@ class shop_model extends model
         return $this->get_all($stm, array('quantity' => $quantity ? $quantity : 3));
     }
 
-    public function getProductManufacturingTimes()
+    public function getProductInfo()
     {
         $stm = $this->pdo->prepare('
         SELECT
-            p.entity_id id, value name, days
+            p.entity_id id, t.manufacturer, t.contact_name, t.contact_phone, t.contact_email, t.cost, value name, days
         FROM
             catalog_product_entity_varchar p
                 LEFT JOIN
@@ -93,7 +93,7 @@ class shop_model extends model
     {
         $stm = $this->pdo->prepare('
         SELECT
-            count(s.product_id) count, s.product_id, t.days, count(s.product_id)/60*days m, qty, p.value name
+            count(s.product_id) count, e.sku, s.product_id, t.days, t.manufacturer, t.contact_name, t.contact_phone, t.contact_email, t.cost, count(s.product_id)/60*days m, qty, p.value name
         FROM
             sales_flat_order_item s
         LEFT JOIN
@@ -102,6 +102,8 @@ class shop_model extends model
             cataloginventory_stock_item q ON q.product_id = t.entity_id
         JOIN
         catalog_product_entity_varchar p ON s.product_id = p.entity_id
+        JOIN
+        catalog_product_entity e ON p.entity_id = e.entity_id
             AND p.attribute_id = 71
         WHERE s.created_at > NOW() - INTERVAL 60 DAY
         AND t.days > 0

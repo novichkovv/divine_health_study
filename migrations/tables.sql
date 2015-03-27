@@ -81,3 +81,9 @@ CREATE TABLE report_group_routes (
   id_route BIGINT UNSIGNED NOT NULL,
   id_group BIGINT UNSIGNED NOT NULL
 );
+
+ALTER TABLE product_manufacturing_times ADD manufacturer VARCHAR (255) NOT NULL after entity_id;
+ALTER TABLE product_manufacturing_times ADD cost VARCHAR (255) NOT NULL after entity_id;
+ALTER TABLE product_manufacturing_times ADD contact_name VARCHAR (255) NOT NULL after entity_id;
+ALTER TABLE product_manufacturing_times ADD contact_phone VARCHAR (255) NOT NULL after entity_id;
+ALTER TABLE product_manufacturing_times ADD contact_email VARCHAR (255) NOT NULL after entity_id;

@@ -68,6 +68,18 @@ tr.new {
     width: 100%;
     height: 100%;
 }
+.sidebar_child {
+    background-color: #dfe9ff;
+}
+.active_child {
+     background-color: #a5c7ff;
+ }
+.active_child:hover {
+    background-color: #a5c7ff !important;
+}
+.active_child a{
+    color: #666;
+}
 
 
 

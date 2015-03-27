@@ -27,9 +27,11 @@ if($model->getOption('enable_low_stock_notifications')) {
 
         $subject = 'Low Inventory Stock Product Notification';
         $mail = '<h1>Some products are close to be out of the stock:</h1>' . "\n";
-        $mail .= '<table border="1" cellspacing="0"><tr><th>Name</th><th>Quantity</th><th>60 Days Sales</th><th>Need Days To Manufacture</th><th>Link</th>' . "\n";
+        $mail .= '<table border="1" cellspacing="0"><tr><th>SKU</th><th>Name</th><th>Quantity</th><th>60 Days Sales</th><th>Need Days To Manufacture</th>' . "\n";
+        $mail .= '<th>Manufacturer</th><th>Contact Name</th><th>Contact phone</th><th>Contact email</th><th>Cost</th><th>Link</th></tr>'. "\n";
         foreach($low_stock_products as $v) {
-            $mail .= '<tr><td>' . $v['name'] . '</td><td>' . $v['qty'] . '</td><td>' . $v['count'] . '</td><td>' . $v['days'] . '</td>' . "\n";
+            $mail .= '<tr><td>' . $v['sku'] . '</td><td>' . $v['name'] . '</td><td>' . $v['qty'] . '</td><td>' . $v['count'] . '</td><td>' . $v['days'] . '</td>' . "\n";
+            $mail .= '<td>' . $v['manufacturer'] . '</td><td>' . $v['contact_name'] . '</td><td>' . $v['contact_phone'] . '</td><td>' . $v['contact_email'] . '</td><td>' . $v['cost'] . '</td>' . "\n";
             $mail .= '<td><a target="_blank" class="btn btn-icon btn-default" href="' .
                 SITE_DIR . 'index.php/admin/catalog_product/edit/id/' . $v['product_id'] . '/">Edit</a></td></tr>' . "\n";
         }
@@ -42,7 +44,6 @@ if($model->getOption('enable_low_stock_notifications')) {
             $to = $row['email'];
             $headers  = 'MIME-Version: 1.0' . "\r\n";
             $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-            // $headers .= 'To: ' . $to . ' <'.$to.'>' . "\r\n";
             $headers .= 'To: ' . $to . "\r\n";
             $headers .= 'From: Divine Health Reports <info@drcolbert.com>' . "\r\n";
             mail($to, $subject, $mail, $headers);
