@@ -10,6 +10,11 @@ class index_controller extends controller
 {
     function index()
     {
+        if($_POST['logout']) {
+            $this->logOut();
+            header('Location: ' . R_SITE_DIR);
+            exit;
+        }
         $this->view('index');
     }
 
@@ -18,6 +23,7 @@ class index_controller extends controller
         if(isset($_POST['login_btn'])) {
             if($this->auth($_POST['login'], md5($_POST['password']), $_POST['remember'])) {
                 header('Location: ' . R_SITE_DIR);
+                exit;
             } else {
                 $this->render('error', true);
             }

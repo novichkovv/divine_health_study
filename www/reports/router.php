@@ -34,7 +34,11 @@ $common_controller->index();
 $controller = new $class_name($vars, $class_name, $action);
 
 if(!$controller->check_auth) {
-    $action .= '_na';
+    if($action == 'index' && $class_name == 'index_controller') {
+        $action .= '_na';
+    } else {
+        header('Location: ' . R_SITE_DIR);
+    }
 }
 if($_REQUEST['ajax']) {
     $action .= '_ajax';
