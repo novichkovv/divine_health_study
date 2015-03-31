@@ -79,7 +79,7 @@ class shop_model extends model
     {
         $stm = $this->pdo->prepare('
         SELECT
-            p.entity_id id, t.manufacturer, t.contact_name, t.contact_phone, t.contact_email, t.cost, value name, days
+            p.entity_id id, t.manufacturer, t.contact_name, t.minimum, t.contact_phone, t.contact_email, t.cost, value name, days
         FROM
             catalog_product_entity_varchar p
                 LEFT JOIN
@@ -93,7 +93,7 @@ class shop_model extends model
     {
         $stm = $this->pdo->prepare('
         SELECT
-            count(s.product_id) count, e.sku, s.product_id, t.days, t.manufacturer, t.contact_name, t.contact_phone, t.contact_email, t.cost, count(s.product_id)/60*days m, qty, p.value name
+            count(s.product_id) count, e.sku, s.product_id, t.days, t.manufacturer, t.minimum, t.contact_name, t.contact_phone, t.contact_email, t.cost, count(s.product_id)/60*days m, qty, p.value name
         FROM
             sales_flat_order_item s
         LEFT JOIN

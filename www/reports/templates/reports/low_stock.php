@@ -35,9 +35,8 @@
                             <th>ID</th>
                             <th>SKU</th>
                             <th>Name</th>
-                            <th>Manufacturing Time</th>
                             <th>Quantity</th>
-                            <th>60 days Sales</th>
+                            <th>Min Stock</th>
                             <th>Manufacturer</th>
                             <th>Contact Name</th>
                             <th>Contact #</th>
@@ -52,9 +51,8 @@
                                 <th><?php echo $v['product_id']; ?></th>
                                 <th><?php echo $v['sku']; ?></th>
                                 <th><?php echo $v['name']; ?></th>
-                                <th><?php echo $v['days']; ?></th>
-                                <th><?php echo $v['qty'];?></th>
-                                <th><?php echo $v['count']; ?></th>
+                                <th><?php echo ceil($v['m']);?></th>
+                                <th><?php echo $v['minimum']; ?></th>
                                 <th><?php echo $v['manufacturer']; ?></th>
                                 <th><?php echo $v['contact_name']; ?></th>
                                 <th><?php echo $v['contact_phone']; ?></th>

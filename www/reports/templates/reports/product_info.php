@@ -15,6 +15,7 @@
                             <th>Product Name</th>
                             <th>Manufacturer</th>
                             <th>Manufacturing Time</th>
+                            <th>Minimum Stock</th>
                             <th>Contact Name</th>
                             <th>Contact #</th>
                             <th>Contact Email</th>
@@ -29,19 +30,22 @@
                                     <td data-field="manufacturer"  id="td_1_<?php echo $product['id'] ?>" class="td_editable inactive">
                                         <?php echo $product['manufacturer']; ?>
                                     </td>
-                                    <td data-field="days" id="td_<?php echo $product['id'] ?>" class="td_editable inactive">
+                                    <td data-field="days" id="td_2_<?php echo $product['id'] ?>" class="td_editable inactive">
                                         <?php echo $product['days']; ?>
                                     </td>
-                                    <td data-field="contact_name" id="td_2_<?php echo $product['id'] ?>" class="td_editable inactive">
+                                    <td data-field="minimum" id="td_3_<?php echo $product['id'] ?>" class="td_editable inactive">
+                                        <?php echo $product['minimum']; ?>
+                                    </td>
+                                    <td data-field="contact_name" id="td_4_<?php echo $product['id'] ?>" class="td_editable inactive">
                                         <?php echo $product['contact_name']; ?>
                                     </td>
-                                    <td data-field="contact_phone" id="td_3_<?php echo $product['id'] ?>" class="td_editable inactive">
+                                    <td data-field="contact_phone" id="td_5_<?php echo $product['id'] ?>" class="td_editable inactive">
                                         <?php echo $product['contact_phone']; ?>
                                     </td>
-                                    <td data-field="contact_email" id="td_4_<?php echo $product['id'] ?>" class="td_editable inactive">
+                                    <td data-field="contact_email" id="td_6_<?php echo $product['id'] ?>" class="td_editable inactive">
                                         <?php echo $product['contact_email']; ?>
                                     </td>
-                                    <td data-field="cost" id="td_4_<?php echo $product['id'] ?>" class="td_editable inactive">
+                                    <td data-field="cost" id="td_7_<?php echo $product['id'] ?>" class="td_editable inactive">
                                         <?php echo $product['cost']; ?>
                                     </td>
                                 </tr>
